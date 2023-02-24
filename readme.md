@@ -91,3 +91,7 @@ Process("scripts.jsproxy.RemoteProcess", "scripts.ping.Ping", ...args);
 在执行完`pnpm run start`后，在开发目录下也会启动一个 express 的 web 服务器，服务器会加载 yao 的 api 下的 http 路由配置并进行监听，同时会加载 yao 目录下的 public 的内容。可以直接使用 web 服务器提供的地址进行 api 测试。最大的好处的是可以调试代码。
 
 **注意:**需要配置环境变量 YAO_APP_ROOT.
+
+## 读取文件
+
+使用 FS 对象读取文件时，需要考虑环境变量 YAO_APP_ROOT 的设置。处理器会读取此目录下 data 子目录的数据。
