@@ -1,7 +1,18 @@
 import fs from "fs";
 import path from "node:path";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
 
-function getFiles(dir: string) {
+function checkIsJsFile(filePath: string) {
+  const ext = path.extname(filePath);
+  return ext === ".js";
+}
+/**
+ * 读取一个目录下所有的js文件
+ * @param dir 目录
+ * @returns
+ */
+function getAllJsFiles(dir: string) {
   let filesall = [] as string[];
 
   let getFile = (d: string) => {
@@ -14,18 +25,15 @@ function getFiles(dir: string) {
       if (fileStat.isDirectory()) {
         getFile(filePath);
       } else {
-        filesall.push(filePath);
+        if (checkIsJsFile(filePath)) {
+          filesall.push(filePath);
+        }
       }
     });
   };
   getFile(dir);
 
   return filesall;
-}
-
-function checkExtension(filePath: string) {
-  const ext = path.extname(filePath);
-  return ext === ".js";
 }
 
 /**
@@ -54,20 +62,19 @@ function processComment(filename: string) {
       needProcess = true;
     } else if (/ProcessEnum\.([\._\-a-zA-Z]*)/.test(line)) {
       lines[index] = line.replaceAll(/ProcessEnum\.([\._\-a-zA-Z]*)/g, `"$1"`);
-    } else if (line.indexOf("process.env.") > -1) {
-      lines[index] = line.replaceAll("process.env.", "$ENV.");
     }
-    //other case
+    // $ENV.只会在json文件里出现，脚本文件里使用处理器utils.env.Get获取变量·
+    // else if (line.indexOf("process.env.") > -1) {
+    //   lines[index] = line.replaceAll("process.env.", "$ENV.");
+    // }
   }
   if (!needProcess) {
     return;
   }
   const commentedData = lines.join("\n");
-
   // save to new file
   fs.writeFileSync(filename, commentedData);
-
-  console.log(`File ${filename} saved!`);
+  console.log(`File ${filename} updated and saved!`);
 }
 
 function renameFile(filename: string) {
@@ -98,27 +105,54 @@ const deleteEmptyFolders = (dir: string) => {
   }
 };
 
-function main() {
-  const folder = path.resolve("./yao/app");
-  let files = getFiles(folder);
+function fixCodes(folder: string) {
+  let files = getAllJsFiles(folder);
   //rename first
   for (const file of files) {
-    const isJSFile = checkExtension(file);
-    if (!isJSFile) {
-      continue;
-    }
     renameFile(file);
   }
 
   deleteEmptyFolders(folder);
 
-  files = getFiles(folder);
+  files = getAllJsFiles(folder);
   for (const file of files) {
-    const isJSFile = checkExtension(file);
-    if (!isJSFile) {
-      continue;
-    }
     processComment(file);
+  }
+}
+function fixFile(fname: string) {
+  if (!checkIsJsFile(fname)) {
+    console.log("Not js file");
+    return;
+  }
+  processComment(fname);
+}
+/**
+ * 清理与修正nodejs打包生成生成的代码。
+ */
+function main() {
+  const argv = yargs(hideBin(process.argv))
+    .options({
+      dir: {
+        alias: "d",
+        type: "string",
+        default: "./dist_esm/app",
+      },
+      file: {
+        alias: "f",
+        type: "string",
+        default: "./dist_esm/app/scripts/jsproxy.js",
+      },
+    })
+    .parseSync();
+
+  let folder = path.resolve(argv.dir);
+  if (fs.existsSync(folder)) {
+    fixCodes(folder);
+  } else {
+    console.log(`directory not exist ${folder}`);
+  }
+  if (argv.file) {
+    fixFile(argv.file);
   }
 }
 main();
