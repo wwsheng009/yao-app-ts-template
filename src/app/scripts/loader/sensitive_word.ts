@@ -22,4 +22,5 @@ function load_sensitive_word() {
   console.log(rc);
   return rc;
 }
-load();
+
+load_sensitive_word();
