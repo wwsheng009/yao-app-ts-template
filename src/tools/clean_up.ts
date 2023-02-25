@@ -156,3 +156,13 @@ function main() {
   }
 }
 main();
+
+function testReplace() {
+  let line = ` let setting = Process(ProcessEnum.yao.table.Setting, table);`;
+
+  if (/ProcessEnum\.([\._\-a-zA-Z]*)/.test(line)) {
+    let newLine = line.replaceAll(/ProcessEnum\.([\._\-a-zA-Z]*)/g, `"$1"`);
+    console.log(newLine);
+  }
+}
+// testReplace();
