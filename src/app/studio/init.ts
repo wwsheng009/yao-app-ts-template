@@ -1,6 +1,5 @@
-import { YaoForm } from "yao-node-client";
 import { Exception } from "yao-node-client";
-import { FS, Process, ProcessEnum } from "yao-node-client";
+import { FS, Process } from "yao-node-client";
 
 //在form与table配置中，yao可以只配置简单的与模型的绑定关系就能带出所有的配置，
 //但是这些配置都是默认项，一般情况是够用了，如果需要更多的配置，就需要手动修改配置文件。
@@ -12,10 +11,11 @@ import { FS, Process, ProcessEnum } from "yao-node-client";
 function createTableSetting(table: string) {
   let filename = `tables/${table.split(".").join("/")}.tab.json`;
   // let table_file = `tables/${table.split(".").join("/")}.tab.json`;
-  let setting = Process(ProcessEnum.yao.table.Setting, table);
+  let setting = Process("yao.table.Setting", table);
   if (setting.code && setting.message) {
     throw new Exception(setting.message, setting.code);
   }
+  delete setting["hooks"];
 
   //重新近排布局
   let newTable: { [key: string]: any } = {
@@ -66,14 +66,14 @@ function createTableSetting(table: string) {
  */
 function createFormSetting(form: string) {
   let filename = `forms/${form.split(".").join("/")}.form.json`;
-  let setting = Process(ProcessEnum.yao.form.Setting, form);
+  let setting = Process("yao.form.Setting", form);
   // createSetting(setting, filename);
-
   if (setting.code && setting.message) {
     throw new Exception(setting.message, setting.code);
   }
+  delete setting["hooks"];
 
-  let newForm: YaoForm.FormDSL & { [key: string]: any } = {
+  let newForm: { [key: string]: any } = {
     //{ [key: string]: any } = {
     name: form,
     action: {
@@ -226,3 +226,4 @@ function createTableAndForm(model: string) {
 // createTableSetting("chat.prompt_template");
 // createFormSetting("chat.prompt_template");
 // createTableAndForm("chat.prompt_template");
+createTableAndForm("chat.sensitive_word");
