@@ -3,6 +3,11 @@ import path from "node:path";
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 
+//清理转换esm格式的js代码为yaojs脚本。
+//注释外部引用，import/require
+//删除fuction的export关键字
+//替换ProcessEnum为字符串
+
 function checkIsJsFile(filePath: string) {
   const ext = path.extname(filePath);
   return ext === ".js";

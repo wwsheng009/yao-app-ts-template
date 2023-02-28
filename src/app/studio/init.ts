@@ -37,17 +37,24 @@ function createTableSetting(table: string) {
   delete setting.fields;
   newTable.layout = setting;
   newTable.fields = fields;
+  if (newTable.layout) {
+    newTable.config = newTable.layout.config;
+    delete newTable.layout.config;
+    delete newTable.layout.name;
+  }
 
   deleteObjectKey(newTable, "id");
   let fs = new FS("dsl");
 
-  if (fs.Exists(filename)) {
-    let template = JSON.parse(fs.ReadFile(filename));
-    //如果已经存在配置，覆盖
-    for (const key in template) {
-      newTable[key] = template[key];
-    }
-  }
+  // if (fs.Exists(filename)) {
+  //   let template = JSON.parse(fs.ReadFile(filename));
+  //   //如果不存在配置，增加，不要直接替换
+  //   for (const key in template) {
+  //     if (!newTable[key]) {
+  //       newTable[key] = template[key];
+  //     }
+  //   }
+  // }
   //make sure the folder exist
   let folder = filename.split("/").slice(0, -1);
   if (!fs.Exists(folder.join("/"))) {
@@ -91,17 +98,25 @@ function createFormSetting(form: string) {
   newForm.layout = setting;
   newForm.fields = fields;
 
+  if (newForm.layout) {
+    newForm.config = newForm.layout.config;
+    delete newForm.layout.config;
+    delete newForm.layout.name;
+  }
+
   deleteObjectKey(newForm, "id");
 
   // 合并原来的配置
   let fs = new FS("dsl");
 
-  if (fs.Exists(filename)) {
-    let template = JSON.parse(fs.ReadFile(filename));
-    for (const key in template) {
-      newForm[key] = template[key];
-    }
-  }
+  // if (fs.Exists(filename)) {
+  //   let template = JSON.parse(fs.ReadFile(filename));
+  //   for (const key in template) {
+  //     if (!newForm[key]) {
+  //       newForm[key] = template[key];
+  //     }
+  //   }
+  // }
 
   let actions = [
     {
@@ -140,7 +155,7 @@ function createFormSetting(form: string) {
         {
           name: "Delete",
           payload: {
-            model: "ai.chatlog",
+            model: form,
           },
           type: "Form.delete",
         },
@@ -223,7 +238,31 @@ function createTableAndForm(model: string) {
   createTableSetting(model);
   createFormSetting(model);
 }
+
+//按以下格式创建默认的table的配置，再调用函数生成默认table配置。
+// {
+//   "name": "::Chat Message",
+//   "action": {
+//     "bind": {
+//       "model": "chat.message",
+//       "option": { "form": "chat.message", "withs": {} }
+//     }
+//   }
+//}
+//按以下格式创建默认的form配置，再调用函数生成默认form配置
+// {
+//   "name": "::AI Conversation Message",
+//   "action": {
+//     "bind": {
+//       "model": "chat.message",
+//     }
+//   }
+// }
+
 // createTableSetting("chat.prompt_template");
 // createFormSetting("chat.prompt_template");
 // createTableAndForm("chat.prompt_template");
-createTableAndForm("chat.sensitive_word");
+// createTableAndForm("chat.conversation");
+// createTableAndForm("chat.message");
+createTableAndForm("chat.conversation");
+// createTableAndForm("chat.conversation");
