@@ -4,7 +4,7 @@ import { FS, FSSAPCE, Process, Query } from "yao-node-client";
  * 从文件加载敏感词到数据库表中
  * @returns
  */
-function load_sensitive_word() {
+function Run() {
   var fs = new FS("system"); // /app_root/data
   var data = fs.ReadFile("/word.txt"); // /app_root/data/xxx
 
@@ -23,4 +23,4 @@ function load_sensitive_word() {
   return rc;
 }
 
-load_sensitive_word();
+Run();

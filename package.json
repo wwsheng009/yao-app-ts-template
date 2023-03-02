@@ -13,10 +13,8 @@
     "yao:build": "rimraf dist_esm && tsc -p ./tsconfig-yao.json && tsc-alias -p ./tsconfig-yao.json",
     "rollup:comp": "rollup -c rollup.config.mjs -i dist_esm/app/scripts/rollup/index.js -o dist_esm/app/scripts/rollup/index.bound.js",
     "yao:rollup": "rimraf yao && rollup -c rollup.config.mjs",
-    "yao:fixed": "tsc && node dist/tools/clean_up.js -d ./yao/app",
-    "yao:fixed-ts": "ts-node -r tsconfig-paths/register src/tools/clean_up.ts -d ./dist_esm/app",
+    "yao:fixed-ts": "tsx src/tools/clean_up.ts -d ./dist_esm/app",
     "yao:pack": "pnpm run yao:rollup && pnpm run yao:fixed",
-    "test:script": "ts-node -r tsconfig-paths/register src/app/scripts/test/index.ts",
     "yao:fixed:jsproxy": "ts-node -r tsconfig-paths/register src/tools/clean_up.ts -f ./dist_esm/app/scripts/jsproxy.js",
     "yao:compile:jsproxy": "pnpm run yao:build && pnpm run yao:fixed:jsproxy"
   },
@@ -27,6 +25,7 @@
   "author": "vincentwwsheng@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "yao-app-ts-types": "workspace:^1.0.0",
     "yao-node-client": "workspace:^1.0.0",
     "yao-node-server": "workspace:^1.0.0",
     "yargs": "^17.7.1"
@@ -48,6 +47,7 @@
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.2",
     "tsconfig-paths": "^4.1.2",
+    "tsx": "^3.12.3",
     "typescript": "^4.9.5"
   }
 }

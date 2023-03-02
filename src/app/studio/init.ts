@@ -259,10 +259,10 @@ function createTableAndForm(model: string) {
 //   }
 // }
 
-// createTableSetting("chat.prompt_template");
+createTableSetting("chat.prompt_template1");
 // createFormSetting("chat.prompt_template");
 // createTableAndForm("chat.prompt_template");
 // createTableAndForm("chat.conversation");
 // createTableAndForm("chat.message");
-createTableAndForm("chat.conversation");
+// createTableAndForm("ai.model");
 // createTableAndForm("chat.conversation");

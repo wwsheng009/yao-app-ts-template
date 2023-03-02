@@ -65,8 +65,11 @@ function processComment(filename: string) {
     } else if (line.startsWith("export function")) {
       lines[index] = line.slice("export ".length);
       needProcess = true;
-    } else if (/ProcessEnum\.([\._\-a-zA-Z]*)/.test(line)) {
-      lines[index] = line.replaceAll(/ProcessEnum\.([\._\-a-zA-Z]*)/g, `"$1"`);
+    } else if (/ProcessEnum\.([\._\-a-zA-Z\d]*)/.test(line)) {
+      lines[index] = line.replaceAll(
+        /ProcessEnum\.([\._\-a-zA-Z\d]*)/g,
+        `"$1"`
+      );
     }
     // $ENV.只会在json文件里出现，脚本文件里使用处理器utils.env.Get获取变量·
     // else if (line.indexOf("process.env.") > -1) {
@@ -165,8 +168,8 @@ main();
 function testReplace() {
   let line = ` let setting = Process(ProcessEnum.yao.table.Setting, table);`;
 
-  if (/ProcessEnum\.([\._\-a-zA-Z]*)/.test(line)) {
-    let newLine = line.replaceAll(/ProcessEnum\.([\._\-a-zA-Z]*)/g, `"$1"`);
+  if (/ProcessEnum\.([\._\-a-zA-Z\d]*)/.test(line)) {
+    let newLine = line.replaceAll(/ProcessEnum\.([\._\-a-zA-Z\d]*)/g, `"$1"`);
     console.log(newLine);
   }
 }
