@@ -1,33 +1,33 @@
-# Typescript 应用开发模板使用
+# YAO 应用开发 Typescript 模板使用
+
+使用 typescript 进行 yao 应用开发,包含必要的 TS 编译脚本配置。TS 开发测试脚本。
 
 ## 说明
 
 在目录 src/app 这个目录下使用 ts 格式进行脚本编程
-在脚本文件中可以引用 yao 各种的对象
+
+在脚本文件中可以引用 yao 各种的对象的方法
 
 ```js
 import { Process, log, Exception, WebSocket } from "yao-node-client";
 ```
 
-## 代码调试
+## 开发环境准备
 
-首先编译项目
+YAO 引擎并不能直接运行 ts 脚本，需要把 ts 脚本转换成 js 后 yao 才能执行。在代码开发阶段,TS 与 YAO-JS 之间利用 CLIENT-SERVER 架构进行调试与测试。需要先进行开发环境的配置。
 
-```
-pnpm run build
-```
 
-编译 jsproxy 代理，yao 应用需要用到这个代理功能。
+先编译 jsproxy 代理TS脚本，yao 应用需要用到这个脚本作HTTP代理。
 
 ```
 pnpm run yao:compile:jsproxy
 ```
 
-复制 src/app/apis/proxy.http.json 到应用目录的 apis 目录下
+复制 src/app/apis/proxy.http.json 到 YAO 应用目录的 apis 目录下
 
-复制 dist_esm/app/scripts/jsproxy.js 到应用目录的 scripts 子目录下
+复制 dist_esm/app/scripts/jsproxy.js 到 YAO 应用目录的 scripts 子目录下
 
-复制 src/app/scripts/remote.js 到应用目录的 scripts 子目录下，后面如果需要从 yao 调用开发目录的脚本就按这个格式进行封装代码。
+复制 src/app/scripts/remote.js 到 YAO 应用目录的 scripts 子目录下，后面如果需要从 yao 调用开发目录的脚本就按这个格式进行封装代码。
 
 在本地开发环境启动服务器
 
