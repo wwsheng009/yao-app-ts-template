@@ -8,7 +8,7 @@ import { FS, Process } from "yao-node-client";
  * 初始化表格的配置文件。
  * @param table 表格名称
  */
-function createTableSetting(table: string) {
+function CreateTableSetting(table: string) {
   let filename = `tables/${table.split(".").join("/")}.tab.json`;
   // let table_file = `tables/${table.split(".").join("/")}.tab.json`;
   let setting = Process("yao.table.Setting", table);
@@ -71,7 +71,7 @@ function createTableSetting(table: string) {
  * 创建表单的配置文件，适用于初始化表单配置
  * @param form 表单名称
  */
-function createFormSetting(form: string) {
+function CreateFormSetting(form: string) {
   let filename = `forms/${form.split(".").join("/")}.form.json`;
   let setting = Process("yao.form.Setting", form);
   // createSetting(setting, filename);
@@ -151,7 +151,18 @@ function createFormSetting(form: string) {
       ],
     },
     {
+      icon: "icon-trash-2",
+      style: "danger",
+      title: "Delete",
       action: [
+        {
+          name: "Confirm",
+          type: "Common.confirm",
+          payload: {
+            title: "确认删除",
+            content: "删除后不可撤销！"
+          }
+        },
         {
           name: "Delete",
           payload: {
@@ -165,14 +176,7 @@ function createFormSetting(form: string) {
           payload: {},
         },
       ],
-      confirm: {
-        desc: "请确认删除，删除后数据无法恢复",
-        title: "确认",
-      },
-      icon: "icon-trash-2",
-      style: "danger",
-      title: "Delete",
-    },
+    }
   ];
 
   newForm.layout.actions = actions;
@@ -235,8 +239,8 @@ function test_delete_object_key() {
  * @param model yao model name
  */
 function createTableAndForm(model: string) {
-  createTableSetting(model);
-  createFormSetting(model);
+  CreateTableSetting(model);
+  CreateFormSetting(model);
 }
 
 //按以下格式创建默认的table的配置，再调用函数生成默认table配置。
@@ -259,10 +263,12 @@ function createTableAndForm(model: string) {
 //   }
 // }
 
-createTableSetting("chat.prompt_template1");
-// createFormSetting("chat.prompt_template");
-// createTableAndForm("chat.prompt_template");
-// createTableAndForm("chat.conversation");
-// createTableAndForm("chat.message");
-// createTableAndForm("ai.model");
-// createTableAndForm("chat.conversation");
+//直接ts执行
+//CreateTableSetting("chat.prompt_template1");
+// CreateFormSetting("chat.prompt_template");
+// CreateTableAndForm("chat.prompt_template");
+
+//使用命令行
+// yao-debug studio run init.CreateTableSetting supplier
+// yao-debug studio run init.CreateFormSetting supplier
+// yao-debug studio run init.CreateTableAndForm supplier
