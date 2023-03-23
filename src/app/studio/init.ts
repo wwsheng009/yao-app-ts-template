@@ -30,9 +30,10 @@ function MakeDefaultTable(table: string) {
     fs.MkdirAll(folder)
 
     fs.WriteFile(filename, JSON.stringify(default1))
-
+    console.log("已生成最小化配置Table:", filename);
+    return false;
   } else {
-    return
+    return true;
   }
 }
 
@@ -57,9 +58,10 @@ function MakeDefaultForm(form: string) {
 
     fs.MkdirAll(folder)
     fs.WriteFile(filename, JSON.stringify(default1))
-
+    console.log("已生成最小化配置Form:", filename);
+    return false;
   } else {
-    return
+    return true;
   }
 }
 /**
@@ -68,9 +70,11 @@ function MakeDefaultForm(form: string) {
  */
 function CreateTable(table: string) {
 
-  MakeDefaultTable(table)
-  //如果不存在，需要执行两次，要不然yao.table.Setting无法加载文件
-
+  const exist = MakeDefaultTable(table);
+  if (exist == false) {
+    console.log("需要生成全配置Table,请再执行一次命令");
+    return;
+  }
   let filename = `tables/${table.split(".").join("/")}.tab.json`;
   // let table_file = `tables/${table.split(".").join("/")}.tab.json`;
   let setting = Process("yao.table.Setting", table);
@@ -165,7 +169,11 @@ function CreateTable(table: string) {
  * @param form 表单名称
  */
 function CreateForm(form: string) {
-  MakeDefaultForm(form)
+  const exist = MakeDefaultForm(form);
+  if (exist == false) {
+    console.log("需要生成全配置Form,请再执行一次");
+    return;
+  }
   //如果不存在，需要执行两次，要不然yao.form.Setting无法加载文件
 
   let filename = `forms/${form.split(".").join("/")}.form.json`;
