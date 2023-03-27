@@ -58,6 +58,15 @@ REMOTE_DEBUG_SERVER="http://localhost:8082/api/proxy/call"
 YAO_API_ACCESS_KEY='Your_key'
 ```
 
+## 注意
+
+如果是开发`studio`脚本,并且在脚本中有写`dsl`文件的操作。，`Yao`的环境变量需要修改成正式模式,防止在脚本运行过程中运行环境被不断的重载
+
+```sh
+YAO_ENV="production"
+
+```
+
 ## 在 TS 中调用 Yao 脚本。
 
 在`Yao`应用目录执行,这一步是必要的。
