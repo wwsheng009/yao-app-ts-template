@@ -4,9 +4,9 @@
 
 ## 说明
 
-在目录 src/app 这个目录下使用 ts 格式进行脚本编程
+项目内置了使用`ts`开发`yao`应用的各种工具。
 
-在脚本文件中可以引用 yao 各种的对象的方法
+比如在`ts`脚本文件中可以引用`yao`各种专有对象的方法
 
 ```js
 import { Process, log, Exception, WebSocket } from "yao-node-client";
@@ -14,31 +14,52 @@ import { Process, log, Exception, WebSocket } from "yao-node-client";
 
 ## 开发环境准备
 
-YAO 引擎并不能直接运行 ts 脚本，需要把 ts 脚本转换成 js 后 yao 才能执行。在代码开发阶段,TS 与 YAO-JS 之间利用 CLIENT-SERVER 架构进行调试与测试。需要先进行开发环境的配置。
-
-
-先编译 jsproxy 代理TS脚本，yao 应用需要用到这个脚本作HTTP代理。
-
-```
-pnpm run yao:compile:jsproxy
+```sh
+git clone git@github.com:wwsheng009/yao-app-ts-template.git yao-app-ts
+cd yao-app-ts
+pnpm i
 ```
 
-复制 src/app/apis/proxy.http.json 到 YAO 应用目录的 apis 目录下
-
-复制 dist_esm/app/scripts/jsproxy.js 到 YAO 应用目录的 scripts 子目录下
-
-复制 src/app/scripts/remote.js 到 YAO 应用目录的 scripts 子目录下，后面如果需要从 yao 调用开发目录的脚本就按这个格式进行封装代码。
-
-在本地开发环境启动服务器
+### 设置`TS`开发环境变量
 
 ```sh
-pnpm run start
+cp .env.sample .env
 ```
+
+- `YAO_APP_PROXY_ENDPOINT`
+  `Yao`应用的访问`API`地址,一般设置成`http://localhost:5199/api/proxy/call`
+  `
+
+- `YAO_APP_ROOT`
+  `YAO`应用的根目录，比如：`/data/projects/yao/demos-v1.0/yao-chatgpt/`
+
+- `YAO_API_ACCESS_KEY`
+  为了接口安全，请设置此变量。**同时需要在 `YAO`应用目录下的`.env`文件中设置此环境变量**
+
+- `LOCAL_SCRIPT_DIST_ROOT`
+  编译后的脚本的目录，设置成`dist/app`
+
+- `LOCAL_APP_ROOT`
+  用来加载本地 api 定义，拦截 api 请求，调用本地的脚本，可以在本地作调试,一般设置成`LOCAL_APP_ROOT="src/app"`
+
+## `Yao`应用设置
+
+YAO 引擎并不能直接运行 ts 脚本，需要把 ts 脚本转换成 js 后 yao 才能执行。在代码开发阶段,TS 与 YAO-JS 之间利用 CLIENT-SERVER 架构进行调试与测试。需要先进行开发环境的配置。
+
+复制 `install/apis/proxy.http.json` 到 YAO 应用目录的 apis 目录下
+
+复制 `install/scripts/jsproxy.js` 到 YAO 应用目录的 scripts 子目录下
+
+复制 `install/scripts/security.js` 到 YAO 应用目录的 scripts 子目录下
+
+复制 `src/app/scripts/remote.js` 到 YAO 应用目录的 scripts 子目录下，后面如果需要从 yao 调用开发目录的脚本就按这个格式进行封装代码。
 
 在 yao 目录下的.env 文件里加上环境变量
 
 ```sh
 REMOTE_DEBUG_SERVER="http://localhost:8082/api/proxy/call"
+
+YAO_API_ACCESS_KEY='Your_key'
 ```
 
 ## 测试调试代理是否成功
@@ -92,6 +113,10 @@ Process("scripts.jsproxy.RemoteProcess", "scripts.ping.Ping", ...args);
 
 **注意:**需要配置环境变量 YAO_APP_ROOT.
 
-## 读取文件
+## 编译 jsproxy
 
-使用 FS 对象读取文件时，需要考虑环境变量 YAO_APP_ROOT 的设置。处理器会读取此目录下 data 子目录的数据。
+使用脚本命令编译`jsproxy`代理脚本
+
+```sh
+pnpm run yao:compile:jsproxy
+```
