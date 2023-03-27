@@ -7,10 +7,10 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Yao Script",
       "skipFiles": ["<node_internals>/**"],
       "program": "${file}",
-      //   "preLaunchTask": "tsc: build",
+      "preLaunchTask": "tsc: build",
       "cwd": "${workspaceFolder}",
       "outFiles": [
         //"sourceMap": true
@@ -22,7 +22,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "ts-node  file",
+      "name": "TS-NODE Launch Yao Script",
+      "preLaunchTask": "tsc: build",
       "runtimeExecutable": "node",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
