@@ -36,11 +36,8 @@ cp .env.sample .env
 - `YAO_API_ACCESS_KEY`
   为了接口安全，请设置此变量。**同时需要在 `YAO`应用目录下的`.env`文件中设置此环境变量**
 
-- `LOCAL_SCRIPT_DIST_ROOT`
-  编译后的脚本的目录，设置成`dist/app`
-
 - `LOCAL_APP_ROOT`
-  用来加载本地 api 定义，拦截 api 请求，调用本地的脚本，可以在本地作调试,一般设置成`LOCAL_APP_ROOT="src/app"`
+  编译后的脚本的目录，设置成`dist/app`
 
 ## `Yao`应用设置
 
