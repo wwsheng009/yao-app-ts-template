@@ -31,9 +31,9 @@
   "author": "vincentwwsheng@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "yao-app-ts-types": "1.0.0",
-    "yao-node-client": "1.0.0",
-    "yao-node-server": "1.0.0",
+    "yao-app-ts-types": "^1.0.0",
+    "yao-node-client": "^1.0.5",
+    "yao-node-server": "^1.0.5",
     "yargs": "^17.7.1"
   },
   "devDependencies": {

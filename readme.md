@@ -1,4 +1,4 @@
-# YAO 应用开发 Typescript 模板使用
+# YAO 应用开发 Typescript 模板
 
 使用 typescript 进行 yao 应用开发,包含必要的 TS 编译脚本配置。TS 开发测试脚本。
 
