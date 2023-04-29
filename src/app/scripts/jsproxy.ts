@@ -54,6 +54,9 @@ export function Server(payload: {
       case "Studio":
         // @ts-ignore
         __YAO_SU_ROOT = true;
+        //0.10.3-dev
+        // @ts-ignore
+        __yao_data = { ROOT: true };
         resp.data = Studio(method, ...localParams);
         break;
       case "Query":
